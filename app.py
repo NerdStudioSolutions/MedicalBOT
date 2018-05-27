@@ -1,9 +1,10 @@
 #Python libraries that we need to import for our bot
+import os
+import sys
+import json
 from chatterbot import ChatBot
-import random
-from flask import Flask, request
-from pymessenger.bot import Bot
-import os 
+import requests
+from flask import Flask, request 
 app = Flask(__name__)
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']   #ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 VERIFY_TOKEN = os.environ['VERIFY_TOKEN']   #VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
