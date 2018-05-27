@@ -1,17 +1,28 @@
-#Python libraries that we need to import for our bot
+#coding=utf-8
+
 import os
 import sys
 import json
 from chatterbot import ChatBot
 import requests
-from flask import Flask, request 
-app = Flask(__name__)
-ACCESS_TOKEN = os.environ['ACCESS_TOKEN']   #ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
-VERIFY_TOKEN = os.environ['VERIFY_TOKEN']   #VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
-bot = Bot (ACCESS_TOKEN)
+from flask import Flask, request
 
-#We will receive messages that Facebook sends our bot at this endpoint 
-@app.route("/", methods=['GET', 'POST'])
+app = Flask(__name__)
+
+
+@app.route('/', methods=['GET'])
+def verify():
+    # cuando el endpoint este registrado como webhook, debe mandar de vuelta
+    # el valor de 'hub.challenge' que recibe en los argumentos de la llamada
+    if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
+        if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
+            return "Verification token mismatch", 403
+        return request.args["hub.challenge"], 200
+
+    return "Hello world", 200
+
+
+@app.route('/', methods=['POST'])
 def webhook():
 
     # endpoint para procesar los mensajes que llegan
