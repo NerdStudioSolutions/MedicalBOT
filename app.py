@@ -15,7 +15,7 @@ def verify():
     # cuando el endpoint este registrado como webhook, debe mandar de vuelta
     # el valor de 'hub.challenge' que recibe en los argumentos de la llamada
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
-        if not request.args.get("hub.verify_token") == os.environ["EAAFVxAn9mMgBAKWricVZAKDbJEu0VrIjPuaaPqbTtZAV8vVBPbNzLNuXjDZCwBZCOLXr4ULKMyeRRWbPQxFz50cZCwtQZCNe37luyQ203bZCQsqS6flxNj2RbAwNBOZAAhmMnbmaRGjQw9ZAPxaZBx9L8hsZCZCA3swBJZCsZBZAZBcmd4tYXAZDZD"]:
+        if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
 
@@ -30,7 +30,7 @@ def webhook():
     data = request.get_json()
     # log(data)  # logging, no necesario en produccion
 
-    inteligente = True
+    inteligente = False
 
     if data["object"] == "page":
 
@@ -92,7 +92,7 @@ def send_message(recipient_id, message_text):
 
 
 def log(message):  # funcion de logging para heroku
-    print (message)
+    print str(message)
     sys.stdout.flush()
 
 
